@@ -1,6 +1,20 @@
 package _03_To_Do_List;
 
-public class ToDoList {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+public class ToDoList implements ActionListener{
 	/*
 	 * Create a program with five buttons, add task, view tasks, remove task, save list, and load list. 
 	 * 
@@ -21,4 +35,100 @@ public class ToDoList {
 	 * 
 	 * When the program starts, it should automatically load the last saved file into the list.
 	 */
+	JFrame tdl;
+	JPanel jp;
+	JButton at;
+	JButton vt;
+	JButton rt;
+	JButton sl;
+	JButton ll;
+	ArrayList<String> arr;
+	public static void main(String[] args) {
+		ToDoList t = new ToDoList();
+		
+		t.createUI();
+	} 
+	public void createUI()
+	{
+		JFrame tdl= new JFrame("To Do List");
+		JPanel jp = new JPanel();
+		JButton at = new JButton("add task");
+		JButton vt = new JButton("view tasks");
+		JButton rt = new JButton("remove task");
+		JButton sl = new JButton("save list");
+		JButton ll = new JButton("load list");
+		tdl.add(jp);
+		jp.add(at);
+		jp.add(vt);
+		jp.add(rt);
+		jp.add(sl);
+		jp.add(ll);
+		at.addActionListener(this);
+		vt.addActionListener(this);
+		rt.addActionListener(this);
+		sl.addActionListener(this);
+		ll.addActionListener(this);
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource() == at)
+		{
+			
+			arr.add(JOptionPane.showInputDialog("Give A task"));
+		}
+		if (e.getSource() == vt);
+		{
+			for(int i =0; arr.size() < 0;i++)
+			{
+				System.out.println(arr.get(i));
+			}
+		}
+		if (e.getSource()  == rt)
+		{
+			arr.remove(JOptionPane.showInputDialog("What task would you like to remove?"));
+		}
+		if(e.getSource() == sl)
+		{
+			try {
+				FileWriter fw = new FileWriter("src/_03_To_Do_List/text.txt");
+				
+			
+				for(int i =0; arr.size() < 0;i++)
+				{
+					fw.write(arr.get(i));
+				}
+					
+				fw.close();
+			} catch (IOException s) {
+				s.printStackTrace();
+			}
+		}
+		if(e.getSource() == ll)
+		{
+			try {
+				BufferedReader br = new BufferedReader(new FileReader("src/_03_To_Do_List/text.txt"));
+//				ArrayList<String> saveL = new ArrayList<String>();
+//				saveL.size() = arr.size();
+				for(int i =0; i<arr.size();i++)
+				{
+					String line = br.readLine();
+					arr.get(i) = line;
+					while(line != null){
+						System.out.println(line);
+						line = br.readLine();
+					}
+				}
+				
+				
+				br.close();
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException l) {
+				// TODO Auto-generated catch block
+				l.printStackTrace();
+			}
+		}
+	}
 }
